@@ -1,4 +1,4 @@
-# PCRLv2 (TPAMI'22)
+# PCRLv2 (TPAMI'23)
 This repository contains an official implementation of our TPAMI paper "A Unified Visual Information Preservation Framework for Self-supervised Pre-training in Medical Image Analysis", an improved version of our ICCV paper (i.e., PCRLv1) "Preservational Learning Improves Self-supervised Medical Image Models by Reconstructing Diverse Contexts".
 
 ## Dependencies
