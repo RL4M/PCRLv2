@@ -36,7 +36,7 @@ aux_params = dict(
         )
 weight_path = './pretrained_weight/simance_multi_crop_chexpter_pretask_1.0_240.pt'
 model = smp.Unet('resnet18', in_channels=3, aux_params=aux_params, classes=1, encoder_weights=None)
-encoder_dict = torch.load(weight)['state_dict']
+encoder_dict = torch.load(weight_path)['state_dict']
 encoder_dict['fc.bias'] = 0
 encoder_dict['fc.weight'] = 0
 model.encoder.load_state_dict(encoder_dict)
