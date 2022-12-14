@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="deepwise">
+    <serverData>
+      <paths name="deepwise">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/Default/research-04/home/luchixiang/PCRLv2" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

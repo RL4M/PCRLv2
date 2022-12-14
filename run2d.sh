@@ -1,0 +1,1 @@
+python main.py --data ../chest14/images --model pcrlv2 --b 64 --epochs 240 --lr 1e-2 --output  weight --n chest --d 2 --gpus 0,1,2,3 --ratio 0.8
