@@ -1,5 +1,7 @@
 # PCRLv2 (TPAMI'23)
-This repository contains an official implementation of our TPAMI paper "A Unified Visual Information Preservation Framework for Self-supervised Pre-training in Medical Image Analysis", an improved version of our ICCV paper (i.e., PCRLv1) "Preservational Learning Improves Self-supervised Medical Image Models by Reconstructing Diverse Contexts".
+This repository contains an official implementation of PCRLv2. The accompanying paper "[A Unified Visual Information Preservation Framework for Self-supervised Pre-training in Medical Image Analysis](https://arxiv.org/pdf/2301.00772.pdf)" has been accepted by IEEE TPAMI. 
+
+Note that PCRLv2 is an improved version of PCRLv2 "[Preservational Learning Improves Self-supervised Medical Image Models by Reconstructing Diverse Contexts](https://arxiv.org/pdf/2109.04379.pdf)".
 
 ## Dependencies
 Please make sure your PyTorch version >=1.1 before you run the code. We strongly recommend you to install Anaconda3 where we use Python 3.6. In addition, we use [apex](https://github.com/NVIDIA/apex) for acceleration. We also use [pretrained-models.pytorch](https://github.com/Cadene/pretrained-models.pytorch) and [segmentation_models_pytorch](https://github.com/qubvel/segmentation_models.pytorch) to speed up the implementation. 
@@ -110,7 +112,7 @@ LUNA16/
 	subset9/
 ```
 
-We provide the list of training images in ``train_val_txt/luna_train.txt``.
+We provide the list of training images in ``train_val_txt/luna_train.txt``. Similar to NIH ChestX-ray, we used ``luna_train.txt`` for semi-supervised experiments, where top K% images in ``luna_train.txt`` are used for pre-training, and the rest are for fine-tuning.
 
 #### **Step 2**
 First, it is suggested to pre-process the LUNA dataset to get cropped pairs from 3D images.
@@ -118,6 +120,8 @@ First, it is suggested to pre-process the LUNA dataset to get cropped pairs from
 ``` python
 python luna_preprocess.py --input_rows 64 --input_cols 64 --input_deps 32 --data path_to_LUNA --save path_to_processedLUNA
 ```
+
+Then, we can start pre-training.
 #### **Step 3**
 ``` python
 python main.py --data path_to_processedLUNA  --model pcrlv2 --b 32 --epochs 240 --lr 1e-3 --output saved_dir  --n luna --d 3 --gpus 0,1,2,3 --ratio 1.0 --amp
