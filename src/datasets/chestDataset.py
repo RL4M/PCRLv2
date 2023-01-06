@@ -11,7 +11,17 @@ import torchvision.transforms as transforms
 
 
 class Pcrlv2ChestPretask(Dataset):
-    def __init__(self, config, img_train, train, transform=None, local_transform = None, spatial_transform=None, spatial_transform_local=None, num_local_view=6):
+    def __init__(
+        self,
+        config,
+        img_train,
+        train,
+        transform=None,
+        local_transform=None,
+        spatial_transform=None,
+        spatial_transform_local=None,
+        num_local_view=6,
+    ):
         self.config = config
         self.imgs = img_train
         self.train = train
@@ -22,15 +32,16 @@ class Pcrlv2ChestPretask(Dataset):
         std = [0.229, 0.224, 0.225]
         self.num_local_view = num_local_view
         self.local_transform = local_transform
-        self.normalize_trans = transforms.Compose([transforms.ToTensor(),
-                                                   transforms.Normalize(mean=mean, std=std)])
+        self.normalize_trans = transforms.Compose(
+            [transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)]
+        )
 
     def __len__(self):
         return len(self.imgs)
 
     def __getitem__(self, index):
         image_name = self.imgs[index]
-        y = Image.open(image_name).convert('RGB')
+        y = Image.open(image_name).convert("RGB")
         # global
         y1 = self.spatial_transform(y)
         y2 = self.spatial_transform(y)

@@ -11,7 +11,15 @@ import torchio.transforms
 
 
 class Pcrlv2LunaPretask(Dataset):
-    def __init__(self, config, img_train, train=False, transform=None, global_transforms=None, local_transforms=None):
+    def __init__(
+        self,
+        config,
+        img_train,
+        train=False,
+        transform=None,
+        global_transforms=None,
+        local_transforms=None,
+    ):
         self.config = config
         self.imgs = img_train
         self.train = train
@@ -38,25 +46,25 @@ class Pcrlv2LunaPretask(Dataset):
         input2 = self.transform(crop2)
         gt1 = copy.deepcopy(input1)
         gt2 = copy.deepcopy(input2)
-        input1 =self.global_transforms(input1)
+        input1 = self.global_transforms(input1)
         input2 = self.global_transforms(input2)
         # input1 = self.local_pixel_shuffling(input1, prob=self.config.local_rate)
         # input2 = self.local_pixel_shuffling(input2, prob=self.config.local_rate)
         # if random.random() < self.config.paint_rate:
         #     input1 = self.image_in_painting(input1)
         #     input2 = self.image_in_painting(input2)
-            # if random.random() < self.config.inpaint_rate:
-            #     # Inpainting
-            #     input1 = self.image_in_painting(input1)
-            #     input2 = self.image_in_painting(input2)
-            # else:
-            #     # Outpainting
-            #     input1 = self.image_out_painting(input1)
-            #     input2 = self.image_out_painting(input2)
-        locals = np.load(image_name.replace('global', 'local'))
+        # if random.random() < self.config.inpaint_rate:
+        #     # Inpainting
+        #     input1 = self.image_in_painting(input1)
+        #     input2 = self.image_in_painting(input2)
+        # else:
+        #     # Outpainting
+        #     input1 = self.image_out_painting(input1)
+        #     input2 = self.image_out_painting(input2)
+        locals = np.load(image_name.replace("global", "local"))
         local_inputs = []
         # local_inputs = []
-        for i  in range(locals.shape[0]):
+        for i in range(locals.shape[0]):
             img = locals[i]
             img = np.expand_dims(img, axis=0)
             img = self.transform(img)
@@ -76,29 +84,33 @@ class Pcrlv2LunaPretask(Dataset):
         #     #         # Outpainting
         #     #         img = self.image_out_painting(img, cnt=2)
         #     local_inputs.append(torch.tensor(img, dtype=torch.float))
-        return torch.tensor(input1, dtype=torch.float), torch.tensor(input2, dtype=torch.float), \
-               torch.tensor(gt1, dtype=torch.float), \
-               torch.tensor(gt2, dtype=torch.float), local_inputs
+        return (
+            torch.tensor(input1, dtype=torch.float),
+            torch.tensor(input2, dtype=torch.float),
+            torch.tensor(gt1, dtype=torch.float),
+            torch.tensor(gt2, dtype=torch.float),
+            local_inputs,
+        )
 
     def bernstein_poly(self, i, n, t):
         """
-         The Bernstein polynomial of n, i as a function of t
+        The Bernstein polynomial of n, i as a function of t
         """
 
         return comb(n, i) * (t ** (n - i)) * (1 - t) ** i
 
     def bezier_curve(self, points, nTimes=1000):
         """
-           Given a set of control points, return the
-           bezier curve defined by the control points.
+        Given a set of control points, return the
+        bezier curve defined by the control points.
 
-           Control points should be a list of lists, or list of tuples
-           such as [ [1,1],
-                     [2,3],
-                     [4,5], ..[Xn, Yn] ]
-            nTimes is the number of time steps, defaults to 1000
+        Control points should be a list of lists, or list of tuples
+        such as [ [1,1],
+                  [2,3],
+                  [4,5], ..[Xn, Yn] ]
+         nTimes is the number of time steps, defaults to 1000
 
-            See http://processingjs.nihongoresources.com/bezierinfo/
+         See http://processingjs.nihongoresources.com/bezierinfo/
         """
 
         nPoints = len(points)
@@ -107,7 +119,9 @@ class Pcrlv2LunaPretask(Dataset):
 
         t = np.linspace(0.0, 1.0, nTimes)
 
-        polynomial_array = np.array([self.bernstein_poly(i, nPoints - 1, t) for i in range(0, nPoints)])
+        polynomial_array = np.array(
+            [self.bernstein_poly(i, nPoints - 1, t) for i in range(0, nPoints)]
+        )
 
         xvals = np.dot(xPoints, polynomial_array)
         yvals = np.dot(yPoints, polynomial_array)
@@ -128,7 +142,12 @@ class Pcrlv2LunaPretask(Dataset):
     def nonlinear_transformation(self, x, prob=0.5):
         if random.random() >= prob:
             return x
-        points = [[0, 0], [random.random(), random.random()], [random.random(), random.random()], [1, 1]]
+        points = [
+            [0, 0],
+            [random.random(), random.random()],
+            [random.random(), random.random()],
+            [1, 1],
+        ]
         xpoints = [p[0] for p in points]
         ypoints = [p[1] for p in points]
         xvals, yvals = self.bezier_curve(points, nTimes=100000)
@@ -153,18 +172,23 @@ class Pcrlv2LunaPretask(Dataset):
             noise_x = random.randint(0, img_rows - block_noise_size_x)
             noise_y = random.randint(0, img_cols - block_noise_size_y)
             noise_z = random.randint(0, img_deps - block_noise_size_z)
-            window = orig_image[0, noise_x:noise_x + block_noise_size_x,
-                     noise_y:noise_y + block_noise_size_y,
-                     noise_z:noise_z + block_noise_size_z,
-                     ]
+            window = orig_image[
+                0,
+                noise_x : noise_x + block_noise_size_x,
+                noise_y : noise_y + block_noise_size_y,
+                noise_z : noise_z + block_noise_size_z,
+            ]
             window = window.flatten()
             np.random.shuffle(window)
-            window = window.reshape((block_noise_size_x,
-                                     block_noise_size_y,
-                                     block_noise_size_z))
-            image_temp[0, noise_x:noise_x + block_noise_size_x,
-            noise_y:noise_y + block_noise_size_y,
-            noise_z:noise_z + block_noise_size_z] = window
+            window = window.reshape(
+                (block_noise_size_x, block_noise_size_y, block_noise_size_z)
+            )
+            image_temp[
+                0,
+                noise_x : noise_x + block_noise_size_x,
+                noise_y : noise_y + block_noise_size_y,
+                noise_z : noise_z + block_noise_size_z,
+            ] = window
         local_shuffling_x = image_temp
 
         return local_shuffling_x
@@ -178,43 +202,80 @@ class Pcrlv2LunaPretask(Dataset):
             noise_x = random.randint(3, img_rows - block_noise_size_x - 3)
             noise_y = random.randint(3, img_cols - block_noise_size_y - 3)
             noise_z = random.randint(3, img_deps - block_noise_size_z - 3)
-            x[:,
-            noise_x:noise_x + block_noise_size_x,
-            noise_y:noise_y + block_noise_size_y,
-            noise_z:noise_z + block_noise_size_z] = np.random.rand(block_noise_size_x,
-                                                                   block_noise_size_y,
-                                                                   block_noise_size_z, ) * 1.0
+            x[
+                :,
+                noise_x : noise_x + block_noise_size_x,
+                noise_y : noise_y + block_noise_size_y,
+                noise_z : noise_z + block_noise_size_z,
+            ] = (
+                np.random.rand(
+                    block_noise_size_x,
+                    block_noise_size_y,
+                    block_noise_size_z,
+                )
+                * 1.0
+            )
             cnt -= 1
         return x
 
     def image_out_painting(self, x, cnt=4):
         _, img_rows, img_cols, img_deps = x.shape
         image_temp = copy.deepcopy(x)
-        x = np.random.rand(x.shape[0], x.shape[1], x.shape[2], x.shape[3], ) * 1.0
-        block_noise_size_x = img_rows - random.randint(3 * img_rows // 7, 4 * img_rows // 7)
-        block_noise_size_y = img_cols - random.randint(3 * img_cols // 7, 4 * img_cols // 7)
-        block_noise_size_z = img_deps - random.randint(3 * img_deps // 7, 4 * img_deps // 7)
+        x = (
+            np.random.rand(
+                x.shape[0],
+                x.shape[1],
+                x.shape[2],
+                x.shape[3],
+            )
+            * 1.0
+        )
+        block_noise_size_x = img_rows - random.randint(
+            3 * img_rows // 7, 4 * img_rows // 7
+        )
+        block_noise_size_y = img_cols - random.randint(
+            3 * img_cols // 7, 4 * img_cols // 7
+        )
+        block_noise_size_z = img_deps - random.randint(
+            3 * img_deps // 7, 4 * img_deps // 7
+        )
         noise_x = random.randint(3, img_rows - block_noise_size_x - 3)
         noise_y = random.randint(3, img_cols - block_noise_size_y - 3)
         noise_z = random.randint(3, img_deps - block_noise_size_z - 3)
-        x[:,
-        noise_x:noise_x + block_noise_size_x,
-        noise_y:noise_y + block_noise_size_y,
-        noise_z:noise_z + block_noise_size_z] = image_temp[:, noise_x:noise_x + block_noise_size_x,
-                                                noise_y:noise_y + block_noise_size_y,
-                                                noise_z:noise_z + block_noise_size_z]
+        x[
+            :,
+            noise_x : noise_x + block_noise_size_x,
+            noise_y : noise_y + block_noise_size_y,
+            noise_z : noise_z + block_noise_size_z,
+        ] = image_temp[
+            :,
+            noise_x : noise_x + block_noise_size_x,
+            noise_y : noise_y + block_noise_size_y,
+            noise_z : noise_z + block_noise_size_z,
+        ]
         while cnt > 0 and random.random() < 0.95:
-            block_noise_size_x = img_rows - random.randint(3 * img_rows // 7, 4 * img_rows // 7)
-            block_noise_size_y = img_cols - random.randint(3 * img_cols // 7, 4 * img_cols // 7)
-            block_noise_size_z = img_deps - random.randint(3 * img_deps // 7, 4 * img_deps // 7)
+            block_noise_size_x = img_rows - random.randint(
+                3 * img_rows // 7, 4 * img_rows // 7
+            )
+            block_noise_size_y = img_cols - random.randint(
+                3 * img_cols // 7, 4 * img_cols // 7
+            )
+            block_noise_size_z = img_deps - random.randint(
+                3 * img_deps // 7, 4 * img_deps // 7
+            )
             noise_x = random.randint(3, img_rows - block_noise_size_x - 3)
             noise_y = random.randint(3, img_cols - block_noise_size_y - 3)
             noise_z = random.randint(3, img_deps - block_noise_size_z - 3)
-            x[:,
-            noise_x:noise_x + block_noise_size_x,
-            noise_y:noise_y + block_noise_size_y,
-            noise_z:noise_z + block_noise_size_z] = image_temp[:, noise_x:noise_x + block_noise_size_x,
-                                                    noise_y:noise_y + block_noise_size_y,
-                                                    noise_z:noise_z + block_noise_size_z]
+            x[
+                :,
+                noise_x : noise_x + block_noise_size_x,
+                noise_y : noise_y + block_noise_size_y,
+                noise_z : noise_z + block_noise_size_z,
+            ] = image_temp[
+                :,
+                noise_x : noise_x + block_noise_size_x,
+                noise_y : noise_y + block_noise_size_y,
+                noise_z : noise_z + block_noise_size_z,
+            ]
             cnt -= 1
         return x

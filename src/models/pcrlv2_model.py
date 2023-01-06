@@ -3,20 +3,22 @@ import torch.nn as nn
 import torch.nn.functional as F
 from segmentation_models_pytorch.base import modules as md
 
-from segmentation_models_pytorch.base.initialization import initialize_decoder, initialize_head
-
+from segmentation_models_pytorch.base.initialization import (
+    initialize_decoder,
+    initialize_head,
+)
 
 
 model_urls = {
-    'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
-    'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
-    'resnet50': 'https://download.pytorch.org/models/resnet50-19c8e357.pth',
-    'resnet101': 'https://download.pytorch.org/models/resnet101-5d3b4d8f.pth',
-    'resnet152': 'https://download.pytorch.org/models/resnet152-b121ed2d.pth',
-    'resnext50_32x4d': 'https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth',
-    'resnext101_32x8d': 'https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth',
-    'wide_resnet50_2': 'https://download.pytorch.org/models/wide_resnet50_2-95faca4d.pth',
-    'wide_resnet101_2': 'https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth',
+    "resnet18": "https://download.pytorch.org/models/resnet18-5c106cde.pth",
+    "resnet34": "https://download.pytorch.org/models/resnet34-333f7ec4.pth",
+    "resnet50": "https://download.pytorch.org/models/resnet50-19c8e357.pth",
+    "resnet101": "https://download.pytorch.org/models/resnet101-5d3b4d8f.pth",
+    "resnet152": "https://download.pytorch.org/models/resnet152-b121ed2d.pth",
+    "resnext50_32x4d": "https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth",
+    "resnext101_32x8d": "https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth",
+    "wide_resnet50_2": "https://download.pytorch.org/models/wide_resnet50_2-95faca4d.pth",
+    "wide_resnet101_2": "https://download.pytorch.org/models/wide_resnet101_2-32ee1156.pth",
 }
 
 
@@ -67,12 +69,12 @@ class CenterBlock(nn.Sequential):
 
 class DecoderBlock(nn.Module):
     def __init__(
-            self,
-            in_channels,
-            skip_channels,
-            out_channels,
-            use_batchnorm=True,
-            attention_type=None,
+        self,
+        in_channels,
+        skip_channels,
+        out_channels,
+        use_batchnorm=True,
+        attention_type=None,
     ):
         super().__init__()
         self.conv1 = md.Conv2dReLU(
@@ -100,15 +102,19 @@ class DecoderBlock(nn.Module):
         #                                      nn.Linear(2 * out_channels, out_channels),
         #                                      nn.BatchNorm1d(out_channels))
         self.bn = nn.BatchNorm1d(out_channels)
-        self.deep_supervision_head = nn.Sequential(nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1),
-                                                   nn.BatchNorm2d(out_channels),
-                                                   nn.ReLU(inplace=True),
-                                                   nn.Conv2d(out_channels, 3, kernel_size=1))
+        self.deep_supervision_head = nn.Sequential(
+            nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(out_channels, 3, kernel_size=1),
+        )
         # self.bn.bias.requires_grad = False
-        self.predictor_head = nn.Sequential(nn.Linear(out_channels, 2 * out_channels),
-                                            nn.BatchNorm1d(2 * out_channels),
-                                            nn.ReLU(inplace=True),
-                                            nn.Linear(2 * out_channels, out_channels))
+        self.predictor_head = nn.Sequential(
+            nn.Linear(out_channels, 2 * out_channels),
+            nn.BatchNorm1d(2 * out_channels),
+            nn.ReLU(inplace=True),
+            nn.Linear(2 * out_channels, out_channels),
+        )
 
     def forward(self, x, skip=None):
         x = F.interpolate(x, scale_factor=2, mode="nearest")
@@ -130,16 +136,15 @@ class DecoderBlock(nn.Module):
 
 class PCRLv2Decoder(nn.Module):
     def __init__(
-            self,
-            # decoder,
-            encoder_channels=512,
-            n_class=3,
-            decoder_channels=(256, 128, 64, 32, 16),
-            n_blocks=5,
-            use_batchnorm=True,
-            center=False,
-            attention_type=None
-
+        self,
+        # decoder,
+        encoder_channels=512,
+        n_class=3,
+        decoder_channels=(256, 128, 64, 32, 16),
+        n_blocks=5,
+        use_batchnorm=True,
+        center=False,
+        attention_type=None,
     ):
         super().__init__()
         # self.decoder = decoder
@@ -151,8 +156,12 @@ class PCRLv2Decoder(nn.Module):
                 )
             )
 
-        encoder_channels = encoder_channels[1:]  # remove first skip with same spatial resolution
-        encoder_channels = encoder_channels[::-1]  # reverse channels to start from head of encoder
+        encoder_channels = encoder_channels[
+            1:
+        ]  # remove first skip with same spatial resolution
+        encoder_channels = encoder_channels[
+            ::-1
+        ]  # reverse channels to start from head of encoder
 
         # computing blocks input and output channels
         head_channels = encoder_channels[0]
@@ -189,7 +198,9 @@ class PCRLv2Decoder(nn.Module):
             x, x_pro, x_pre, x_mask = decoder_block(x, skip)
             decoder_outs.append((x_pro, x_pre))
             if not local:
-                middle_out = F.interpolate(x_mask, scale_factor=2 ** (4 - i), mode='bilinear')
+                middle_out = F.interpolate(
+                    x_mask, scale_factor=2 ** (4 - i), mode="bilinear"
+                )
                 middle_masks.append(middle_out)
         return decoder_outs, x, middle_masks
 
@@ -197,7 +208,7 @@ class PCRLv2Decoder(nn.Module):
 class PCRLv2(nn.Module):
     def __init__(self, n_class=3, low_dim=128):
         super(PCRLv2, self).__init__()
-        self.model = smp.Unet('resnet18', in_channels=3, classes=n_class)
+        self.model = smp.Unet("resnet18", in_channels=3, classes=n_class)
         self.model.decoder = PCRLv2Decoder(self.model.encoder.out_channels)
 
     def forward(self, x, local=False):
