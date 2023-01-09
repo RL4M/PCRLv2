@@ -1,0 +1,13 @@
+device: gpu
+precision: 32
+device_count: 1
+compute_target: gpu-cluster-2-V100s-LP
+compute_target_args:
+  instance_type: STANDARD_NC6s_v3
+  gpu: true
+  machine_name: Telsa V100
+  process_count_per_instance: 1
+experiment_name: DeSD
+environment: Pytorch-1_7:4
+batch_size: 1
+tier: LowPriority
