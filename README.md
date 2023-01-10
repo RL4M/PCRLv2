@@ -1,7 +1,8 @@
 # PCRLv2 (TPAMI'23)
+https://github.com/seanreed1111/PCRLv2
 This repository contains an official implementation of PCRLv2. The accompanying paper "[A Unified Visual Information Preservation Framework for Self-supervised Pre-training in Medical Image Analysis](https://arxiv.org/pdf/2301.00772.pdf)" has been accepted by IEEE TPAMI. 
 
-Note that PCRLv2 is an improved version of PCRLv2 "[Preservational Learning Improves Self-supervised Medical Image Models by Reconstructing Diverse Contexts](https://arxiv.org/pdf/2109.04379.pdf)".
+Note that PCRLv2 is an improved version of PCRLv1 "[Preservational Learning Improves Self-supervised Medical Image Models by Reconstructing Diverse Contexts](https://arxiv.org/pdf/2109.04379.pdf)".
 
 ## Dependencies
 Please make sure your PyTorch version >=1.1 before you run the code. We strongly recommend you to install Anaconda3 where we use Python 3.6. In addition, we use [apex](https://github.com/NVIDIA/apex) for acceleration. We also use [pretrained-models.pytorch](https://github.com/Cadene/pretrained-models.pytorch) and [segmentation_models_pytorch](https://github.com/qubvel/segmentation_models.pytorch) to speed up the implementation. 
