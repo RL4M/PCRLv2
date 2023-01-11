@@ -18,7 +18,7 @@ def get_dataloader(args):
     return dataloader
 
 
-if __name__ == "__main__":
+def get_args():
     parser = argparse.ArgumentParser(description="Self Training benchmark")
     parser.add_argument(
         "--data",
@@ -39,12 +39,12 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", default=100, type=int, help="epochs to train")
     parser.add_argument("--lr", default=1e-3, type=float, help="learning rate")
     parser.add_argument(
-        "--output", default="./model_genesis_pretrain", type=str, help="output path"
+        "--output", default="outputs/model_pretrain", type=str, help="output path"
     )
     parser.add_argument("--n", default="luna", type=str, help="dataset to use")
     parser.add_argument("--d", default=3, type=int, help="3d or 2d to run")
     parser.add_argument("--workers", default=4, type=int, help="num of workers")
-    parser.add_argument("--gpus", default="0,1,2,3", type=str, help="gpu indexs")
+    parser.add_argument("--gpus", default="0", type=str, help="gpu indexs")
     parser.add_argument(
         "--ratio", default=0.8, type=float, help="ratio of data used for pretraining"
     )
@@ -52,14 +52,24 @@ if __name__ == "__main__":
     parser.add_argument("--weight_decay", default=1e-4)
     parser.add_argument("--seed", default=42, type=int)
     parser.add_argument("--amp", action="store_true", default=False)
-    args = parser.parse_args()
-    if not os.path.exists(args.output):
-        os.makedirs(args.output)
-    print(args)
-    os.environ["CUDA_VISIBLE_DEVICES"] = args.gpus
-    torch.backends.cudnn.benchmark = True
+    return parser
+
+
+def main(args):
     data_loader = get_dataloader(args)
-    if args.model == "pcrlv2" and args.phase == "pretask" and args.d == 2:
-        train_pcrlv2(args, data_loader)
-    elif args.model == "pcrlv2" and args.phase == "pretask" and args.d == 3:
-        train_pcrlv2_3d(args, data_loader)
+    """
+    set up for fine tuning task.
+    load the pretrained model.
+    which layers should you freeze weights for?
+    what is the proper learning rate for fine tuning task?
+    what is the proper batch size for fine tuning task?
+    
+    """
+    # if args.model == "pcrlv2" and args.phase == "pretask" and args.d == 2:
+    #     train_pcrlv2(args, data_loader)
+    # elif args.model == "pcrlv2" and args.phase == "pretask" and args.d == 3:
+    #     train_pcrlv2_3d(args, data_loader)
+
+
+if __name__ == "__main__":
+    pass
