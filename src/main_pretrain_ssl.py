@@ -6,8 +6,9 @@ import torch.backends.cudnn
 from train_2d import train_pcrlv2
 from train_3d import train_pcrlv2_3d
 from data import DataGenerator
+from loggers import create_python_logger
 
-warnings.filterwarnings("ignore")
+pylogger = create_python_logger(__name__)
 
 
 def get_dataloader(args):
@@ -36,7 +37,7 @@ def get_args():
         help="pretask or finetune or train from scratch",
     )
     parser.add_argument("--b", default=16, type=int, help="batch size")
-    parser.add_argument("--epochs", default=100, type=int, help="epochs to train")
+    parser.add_argument("--epochs", default=1, type=int, help="epochs to train")
     parser.add_argument("--lr", default=1e-3, type=float, help="learning rate")
     parser.add_argument(
         "--output", default="outputs/model_pretrain", type=str, help="output path"
@@ -44,7 +45,7 @@ def get_args():
     parser.add_argument("--n", default="luna", type=str, help="dataset to use")
     parser.add_argument("--d", default=3, type=int, help="3d or 2d to run")
     parser.add_argument("--workers", default=4, type=int, help="num of workers")
-    parser.add_argument("--gpus", default="0", type=str, help="gpu indexs")
+    parser.add_argument("--gpus", default="0", type=str, help="gpu indexes")
     parser.add_argument(
         "--ratio", default=0.8, type=float, help="ratio of data used for pretraining"
     )

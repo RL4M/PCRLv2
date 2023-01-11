@@ -59,11 +59,11 @@ def main(args):
     data_loader = get_dataloader(args)
     """
     set up for fine tuning task.
-    load the pretrained model.
+    load a pretrained model. Try all three!
     which layers should you freeze weights for?
     what is the proper learning rate for fine tuning task?
     what is the proper batch size for fine tuning task?
-    
+
     """
     # if args.model == "pcrlv2" and args.phase == "pretask" and args.d == 2:
     #     train_pcrlv2(args, data_loader)

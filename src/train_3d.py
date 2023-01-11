@@ -2,28 +2,24 @@
 Training code for C2L
 
 """
-from __future__ import print_function
 
-import os
-import sys
-import time
-import math
+from __future__ import print_function
+from loggers import create_python_logger
+import os, sys, time, math, logging, random
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
-import random
 from utils import adjust_learning_rate, AverageMeter
 
-from models import PCRLv23d
+from models.pcrlv2_model_3d import PCRLv23d
 
 try:
     from apex import amp, optimizers
 except ImportError:
     pass
 
-
-# from koila import LazyTensor, lazy
+pylogger = create_python_logger(__name__)
 
 
 def Normalize(x):
@@ -56,7 +52,7 @@ def train_pcrlv2_3d(args, data_loader, out_channel=3):
 
     criterion = nn.MSELoss().cuda()
     cosine = nn.CosineSimilarity().cuda()
-    cudnn.benchmark = True
+    # cudnn.benchmark = True
 
     for epoch in range(0, args.epochs + 1):
 
@@ -73,7 +69,7 @@ def train_pcrlv2_3d(args, data_loader, out_channel=3):
         # save model
         if epoch % 100 == 0 or epoch == 240:
             # saving the model
-            print("==> Saving...")
+            pylogger.debug("==> Saving model...")
             state = {
                 "opt": args,
                 "state_dict": model.module.state_dict(),
@@ -137,17 +133,21 @@ def train_pcrlv2_inner(args, epoch, train_loader, model, optimizer, criterion, c
         gt = gt.float().cuda()
         mask1, decoder_outputs1, middle_masks1 = model(x1)
         mask2, decoder_outputs2, _ = model(x2)
-        # print(len(local_views), local_views[0].shape)
+        pylogger.debug(
+            f"len(local_views:{len(local_views)}, local_views[0].shape:{local_views[0].shape}"
+        )
         loss2, index2 = cos_loss(cosine, decoder_outputs1, decoder_outputs2)
         local_loss = 0.0
         local_input = torch.cat(local_views, dim=0)  # 6 * bsz, 3, d, 96, 96
-        # # print(local_input.shape)
+        pylogger.debug(local_input.shape)
         _, local_views_outputs, _ = model(
             local_input, local=True
         )  # 4 * 2 * [6 * bsz, 3, d, 96, 96]
-        # # print(len(local_views_outputs),local_views_outputs[0].shape)
+        pylogger.debug(
+            f"len(local_views_outputs):{len(local_views_outputs)},local_views_outputs[0].shape:{local_views_outputs[0].shape}"
+        )
         local_views_outputs = [torch.stack(t) for t in local_views_outputs]
-        # #  print(local_views_outputs[0].shape)
+        pylogger.debug(local_views_outputs[0].shape)
         for i in range(len(local_views)):
             # local_views_outputs, _, _ = model(local_views[i], local=True)
             local_views_outputs_tmp = [
@@ -190,7 +190,7 @@ def train_pcrlv2_inner(args, epoch, train_loader, model, optimizer, criterion, c
 
         # print info
         if (idx + 1) % 10 == 0:
-            print(
+            pylogger.debug(
                 "Train: [{0}][{1}/{2}]\t"
                 "BT {batch_time.val:.3f} ({batch_time.avg:.3f})\t"
                 "DT {data_time.val:.3f} ({data_time.avg:.3f})\t"
