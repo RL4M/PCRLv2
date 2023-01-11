@@ -18,7 +18,7 @@ if __name__ == "__main__":
         "simance_multi_crop_chexpter_pretask_1.0_240.pth",
         "simance_multi_crop_chest_pretask_1.0_240.pth",
     ]:
-        weight_path = Path(str(args.base_weight_path), model_name)
-        model_dict = torch.load(weight_path, map_location=torch.device("cpu"))
+        model_dict_path = Path(str(args.base_weight_path), model_name)
+        model_dict = torch.load(model_dict_path, map_location=torch.device("cpu"))
         model.load_state_dict(model_dict)
         pylogger.debug(f"model:{model_name} loaded successfully")
