@@ -34,14 +34,14 @@ BraTS'18/
 			Brats18_TCIA01_460_1_t2.nii.gz
 			Brats18_TCIA01_460_1_flair.nii.gz
 			Brats18_TCIA01_460_1_t1ce.nii.gz
-        ...
+  		...
 	LGG/
 		Brats18_TCIA12_466_1/
 			Brats18_TCIA12_466_1_t1.nii.gz
 			Brats18_TCIA12_466_1_t2.nii.gz
 			Brats18_TCIA12_466_1_flair.nii.gz
 			Brats18_TCIA12_466_1_t1ce.nii.gz
-        ...
+  		...
 ```
 
 
