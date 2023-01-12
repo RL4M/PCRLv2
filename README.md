@@ -173,7 +173,7 @@ To achieve state-of-art performance on Lits dataset, we modify the finetune code
 
 #### Step 1
 
-Download the Lits17 dataset from [here](https://competitions.codalab.org/competitions/17094).
+Download the LiTS17 dataset from [here](https://competitions.codalab.org/competitions/17094).
 
 #### Step 2
 
