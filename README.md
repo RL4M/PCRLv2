@@ -151,7 +151,7 @@ python main.py --data path_to_chest14 --model pcrlv2 --phase finetune --lr 1e-4 
 
 
 
-### on Brats18 Segmentation Dataset
+### on Brats18 Brain Tumor Segmentation Challenge Dataset
 
 #### Step1 
 
@@ -165,7 +165,9 @@ python main.py --data path_to_brats --model pcrlv2 --phase finetune --lr 1e-4 --
 
  Here we segment wt, et, tc simultaneously.
 
-### on Lits Segmentation Dataset
+
+
+### on LiTS Tumor Segmentation Challenge Dataset
 
 To achieve state-of-art performance on Lits dataset, we modify the finetune code based on [this](https://github.com/assassint2017/MICCAI-LITS2017).
 
@@ -177,7 +179,6 @@ Download the Lits17 dataset from [here](https://competitions.codalab.org/competi
 
 ```
 cd MICCAI-LITS2017
-
 ```
 
 #### Step 3
