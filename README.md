@@ -134,4 +134,4 @@ bash run3d.sh
 ----
 ## How to Perform Fine-tuning
 
-Please refer to the **finetune** branch!
+Please refer to the [finetune](https://github.com/RL4M/PCRLv2/tree/finetune) branch!
