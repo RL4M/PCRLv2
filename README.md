@@ -134,7 +134,7 @@ bash run3d.sh
 
 
 
-## How to Perform Pre-training
+## How to Perform Finetuning
 
 ### on NIH ChestX-ray
 
