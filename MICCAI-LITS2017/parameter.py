@@ -1,15 +1,15 @@
 # -----------------------路径相关参数---------------------------------------
 
-train_ct_path = '/data1/luchixiang/lits/train/CT/'  # 原始训练集CT数据路径
+train_ct_path = './lits/train/CT/'  # 原始训练集CT数据路径
 
-train_seg_path = '/data1/luchixiang/lits/train/seg/'  # 原始训练集标注数据路径
+train_seg_path = './lits/train/seg/'  # 原始训练集标注数据路径
 
-test_ct_path = '/home/luchixiang/lits/test/CT/'  # 原始测试集CT数据路径
+test_ct_path = './lits/test/CT/'  # 原始测试集CT数据路径
 
-test_seg_path = '/home/luchixiang/lits/test/seg/'  # 原始测试集标注数据路径
+test_seg_path = './lits/test/seg/'  # 原始测试集标注数据路径
 
-training_set_path = '/data1/luchixiang/lits/precessed2'  # 用来训练网络的数据保存地址
-valid_set_path = '/data1/luchixiang/lits/precessed2_valid'
+training_set_path = './lits/precessed2'  # 用来训练网络的数据保存地址
+valid_set_path = './lits/precessed2_valid'
 pred_path = './liver_pred'  # 网络预测结果保存路径
 
 crf_path = './crf'  # CRF优化结果保存路径
