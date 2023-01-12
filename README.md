@@ -132,3 +132,61 @@ or
 bash run3d.sh
 ```
 
+
+
+## How to Perform Pre-training
+
+### on NIH ChestX-ray
+
+#### Step 1
+
+Download NIH ChestX-ray from [here](https://nihcc.app.box.com/v/ChestXray-NIHCC) (the same as the first step in chest pretraining).
+
+
+#### Step 2
+
+```
+python main.py --data path_to_chest14 --model pcrlv2 --phase finetune --lr 1e-4 --output ./chest14_finetune_weight --weight ./pretrained_weight/simance_multi_crop_chest_pretask_1.0_240.pt --n chest --d 2 --gpus 0 --ratio 0.8
+```
+
+
+
+### on Brats18 Segmentation Dataset
+
+#### Step1 
+
+Download the brats18 dataset.
+
+#### Step 2 
+
+```
+python main.py --data path_to_brats --model pcrlv2 --phase finetune --lr 1e-4 --output ./brats_finetune_weight --weight ./pretrained_weight/simance_multi_crop_luna_pretask_1.0_240.pt --n brats --d 3 --gpus 0,1,2,3 --b 4 --ratio 1.0
+```
+
+ Here we segment wt, et, tc simultaneously.
+
+### on Lits Segmentation Dataset
+
+To achieve state-of-art performance on Lits dataset, we modify the finetune code based on [this](https://github.com/assassint2017/MICCAI-LITS2017).
+
+#### Step 1
+
+Download the Lits17 dataset from [here](https://competitions.codalab.org/competitions/17094).
+
+#### Step 2
+
+```
+cd MICCAI-LITS2017
+
+```
+
+#### Step 3
+
+Modify the config file in parameter.py file. Change the data path to your own Lits data path.
+
+#### Step 4
+
+```
+python train_ds.py --weight ../download_weight/simance_multi_crop_luna_pretask_1.0_240.pt --gpus 0,1
+```
+
