@@ -1,5 +1,5 @@
 # PCRLv2 (TPAMI'23)
-This repository contains an official implementation of PCRLv2 (:heavy_exclamation_mark: Codes of **Pre-training** and ***Fine-tuning* were included). The accompanying paper "[A Unified Visual Information Preservation Framework for Self-supervised Pre-training in Medical Image Analysis](https://arxiv.org/pdf/2301.00772.pdf)" has been accepted by IEEE TPAMI. 
+This repository contains an official implementation of PCRLv2 (:heavy_exclamation_mark: **fine-tuning code** was also included). The accompanying paper "[A Unified Visual Information Preservation Framework for Self-supervised Pre-training in Medical Image Analysis](https://arxiv.org/pdf/2301.00772.pdf)" has been accepted by IEEE TPAMI. 
 
 Note that PCRLv2 is an improved version of PCRLv2 "[Preservational Learning Improves Self-supervised Medical Image Models by Reconstructing Diverse Contexts](https://arxiv.org/pdf/2109.04379.pdf)".
 
