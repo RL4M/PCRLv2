@@ -22,26 +22,26 @@ python main.py --data path_to_chest14 --model pcrlv2 --phase finetune --lr 1e-4 
 ----
 ## on BraTS'18 (Brain Tumor Segmentation)
 
-### Step1 
+### Step 1 
 
 Download the BraTS'18 dataset first. The image folder of BraTS'18 should be organized as follows:
 
 ```
 BraTS'18/
-	HGG/
-  		Brats18_TCIA01_460_1/
-			Brats18_TCIA01_460_1_t1.nii.gz
-			Brats18_TCIA01_460_1_t2.nii.gz
-			Brats18_TCIA01_460_1_flair.nii.gz
-			Brats18_TCIA01_460_1_t1ce.nii.gz
-  		...
-	LGG/
-		Brats18_TCIA12_466_1/
-			Brats18_TCIA12_466_1_t1.nii.gz
-			Brats18_TCIA12_466_1_t2.nii.gz
-			Brats18_TCIA12_466_1_flair.nii.gz
-			Brats18_TCIA12_466_1_t1ce.nii.gz
-  		...
+|--- HGG/
+|  	|--- Brats18_TCIA01_460_1/
+|	|	|--- Brats18_TCIA01_460_1_t1.nii.gz
+|	|	|--- Brats18_TCIA01_460_1_t2.nii.gz
+|	|	|--- Brats18_TCIA01_460_1_flair.nii.gz
+|	|	|--- Brats18_TCIA01_460_1_t1ce.nii.gz
+|  	|--- ...
+|--- LGG/
+|  	|--- Brats18_TCIA12_466_1/
+|	|	|--- Brats18_TCIA12_466_1_t1.nii.gz
+|	|	|--- Brats18_TCIA12_466_1_t2.nii.gz
+|	|	|--- Brats18_TCIA12_466_1_flair.nii.gz
+|	|	|-- -Brats18_TCIA12_466_1_t1ce.nii.gz
+|  	|--- ...
 ```
 
 
@@ -65,20 +65,20 @@ First download the LiTS17 dataset from [here](https://competitions.codalab.org/c
 
 ```
 LiTS'17/
-|---train/
-|	|---CT/
-|	|	|---volume10.nii.gz
-|	|	|---...
-|	|---seg/
-|	|	|---segmentation10.nii.gz
-		|---...
-|---test/
-|	|---CT/
-|	|	|---volume22.nii.gz
-|	|	|---...
-|	|---seg/
-|	|	|---segmentation22.nii.gz
-|	|	|---...
+|--- train/
+|	|--- CT/
+|	|	|--- volume10.nii.gz
+|	|	|--- ...
+|	|--- seg/
+|	|	|--- segmentation10.nii.gz
+|	|	|--- ...
+|--- test/
+|	|--- CT/
+|	|	|--- volume22.nii.gz
+|	|	|--- ...
+|	|--- seg/
+|	|	|--- segmentation22.nii.gz
+|	|	|--- ...
 ```
 
 
