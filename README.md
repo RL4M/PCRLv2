@@ -61,7 +61,7 @@ model.load_state_dict(model_dict)
 #### **Step 1**
 
 Download NIH ChestX-ray from [here](https://nihcc.app.box.com/v/ChestXray-NIHCC). The image folder of NIH ChestX-ray should be organized as follows:
-``` python
+```
 Chest14/
 |--- images/
 |	|--- 00002639_006.png
@@ -100,7 +100,7 @@ bash run2d.sh
 #### **Step 1**
 
 Download LUNA16 from [here](https://luna16.grand-challenge.org/Download/). The image folder of LUNA16 should be organized as follows:
-```python
+```
 LUNA16/
 |--- subset0/   		   	
 |	|--- 1.3.6.1.4.1.14519.5.2.1.6279.6001.979083010707182900091062408058.raw
