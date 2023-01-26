@@ -65,20 +65,20 @@ First download the LiTS17 dataset from [here](https://competitions.codalab.org/c
 
 ```
 LiTS'17/
-	train/
-		CT/
-			volume10.nii.gz
-			...
-		seg/
-			segmentation10.nii.gz
-			...
-	test/
-		CT/
-			volume22.nii.gz
-			...
-		seg/
-			segmentation22.nii.gz
-			...
+|---train/
+|	|---CT/
+|	|	|---volume10.nii.gz
+|	|	|---...
+|	|---seg/
+|	|	|---segmentation10.nii.gz
+		|---...
+|---test/
+|	|---CT/
+|	|	|---volume22.nii.gz
+|	|	|---...
+|	|---seg/
+|	|	|---segmentation22.nii.gz
+|	|	|---...
 ```
 
 
@@ -93,7 +93,7 @@ cd MICCAI-LITS2017
 
 Change default data paths in `MICCAI-LITS2017/parameter.py` to your own paths where LiTS data is stored. And modity the training_set_path, valid_set_path to the path you want to store your processed LiTS'17 dataset. 
 
-#### Step 4
+### Step 4
 
 Preprocess the training set.
 
@@ -102,7 +102,7 @@ cd data_prepare
 python get_training_set.py
 ```
 
-#### Step 5
+### Step 5
 
 ```
 python train_ds.py --weight ../download_weight/simance_multi_crop_luna_pretask_1.0_240.pt --gpus 0,1
