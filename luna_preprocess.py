@@ -142,7 +142,7 @@ def infinite_generator_from_one_volume(img_array, save_dir, name):
         # crop_window = np.concatenate([crop_window, local_windows], axis=0)
         # print(crop_window.shape)
         np.save(os.path.join(save_dir, name + '_global_' + str(num_pair) + '.npy'), crop_window)
-        np.save(os.path.join(save_dir, name + '_local_' + str(num_pair)  + '.npy'), crop_window)
+        np.save(os.path.join(save_dir, name + '_local_' + str(num_pair)  + '.npy'), local_windows)
         num_pair += 1
         if num_pair == config.scale:
             break
