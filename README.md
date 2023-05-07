@@ -1,5 +1,5 @@
 # PCRLv2 (TPAMI'23)
-This repository contains an official implementation of PCRLv2. The accompanying paper "[A Unified Visual Information Preservation Framework for Self-supervised Pre-training in Medical Image Analysis](https://arxiv.org/pdf/2301.00772.pdf)" has been accepted by IEEE TPAMI. 
+This repository contains an official implementation of PCRLv2 (:heavy_exclamation_mark:**fine-tuning code** was also included). The accompanying paper "[A Unified Visual Information Preservation Framework for Self-supervised Pre-training in Medical Image Analysis](https://arxiv.org/pdf/2301.00772.pdf)" has been accepted by IEEE TPAMI. 
 
 Note that PCRLv2 is an improved version of PCRLv1 "[Preservational Learning Improves Self-supervised Medical Image Models by Reconstructing Diverse Contexts](https://arxiv.org/pdf/2109.04379.pdf)".
 
@@ -19,9 +19,9 @@ Download the pretrained model weights from https://drive.google.com/drive/folder
 
 ```
 pretrained_weight/
-	simance_multi_crop_luna_pretask_1.0_240.pt
-	simance_multi_crop_chest_pretask_1.0_240.pt
-	simance_multi_crop_chexpter_pretask_1.0_240.pt
+|--- simance_multi_crop_luna_pretask_1.0_240.pt
+|--- simance_multi_crop_chest_pretask_1.0_240.pt
+|--- simance_multi_crop_chexpter_pretask_1.0_240.pt
 ```
 Here, ``simance_multi_crop_luna_pretask_1.0_240.pt``, ``simance_multi_crop_chest_pretask_1.0_240.pt``, and ``simance_multi_crop_chexpter_pretask_1.0_240.pt`` correspond to pre-trained models on LUNA, NIH ChestX-ray, and CheXpert, respectively.
 
@@ -53,7 +53,7 @@ weight_path = './pretrained_weight/simance_multi_crop_luna_pretask_1.0_240.pt'
 model_dict = torch.load(weight)['state_dict']
 model.load_state_dict(model_dict)
 ```
-
+----
 ## How to Perform Pre-training
 
 ### on NIH ChestX-ray
@@ -61,12 +61,12 @@ model.load_state_dict(model_dict)
 #### **Step 1**
 
 Download NIH ChestX-ray from [here](https://nihcc.app.box.com/v/ChestXray-NIHCC). The image folder of NIH ChestX-ray should be organized as follows:
-``` python
+```
 Chest14/
-	images/
-		00002639_006.png
-		00010571_003.png
-		...
+|--- images/
+|	|--- 00002639_006.png
+|	|--- 00010571_003.png
+|	|--- ...
 ```
 
 Besides, we also provide the list of images used for pre-training: ``train_val_txt/chest_train.txt``. Specifically, for semi-supervised experiments, we use top K% images for pre-training and last (100-K)% for fine-tuning. For instance, given a ratio of 9.5:0.5, we use the first 95% images in ``chest_train.txt`` for pre-training, while the rest 5% images are used for fine-tuning.
@@ -100,16 +100,16 @@ bash run2d.sh
 #### **Step 1**
 
 Download LUNA16 from [here](https://luna16.grand-challenge.org/Download/). The image folder of LUNA16 should be organized as follows:
-```python
+```
 LUNA16/
-	subset0/   		   	
-		1.3.6.1.4.1.14519.5.2.1.6279.6001.979083010707182900091062408058.raw
-		1.3.6.1.4.1.14519.5.2.1.6279.6001.979083010707182900091062408058.mhd
-  	...
-	subset1/
-	subset2/
-	...
-	subset9/
+|--- subset0/   		   	
+|	|--- 1.3.6.1.4.1.14519.5.2.1.6279.6001.979083010707182900091062408058.raw
+|	|--- 1.3.6.1.4.1.14519.5.2.1.6279.6001.979083010707182900091062408058.mhd
+|	|--- ...
+|--- subset1/
+|--- subset2/
+|--- ...
+|--- subset9/
 ```
 
 We provide the list of training images in ``train_val_txt/luna_train.txt``. Similar to NIH ChestX-ray, we used ``luna_train.txt`` for semi-supervised experiments, where top K% images in ``luna_train.txt`` are used for pre-training, and the rest are for fine-tuning.
@@ -131,4 +131,7 @@ or
 ```
 bash run3d.sh
 ```
+----
+## How to Perform Fine-tuning
 
+Please refer to the [finetune](https://github.com/RL4M/PCRLv2/tree/finetune) branch!
