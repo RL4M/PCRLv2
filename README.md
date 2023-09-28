@@ -2,7 +2,7 @@
 This repository contains an official implementation of PCRLv2. The accompanying paper "[A Unified Visual Information Preservation Framework for Self-supervised Pre-training in Medical Image Analysis](https://arxiv.org/pdf/2301.00772.pdf)" has been accepted by IEEE TPAMI. 
 
 Note that PCRLv2 is an improved version of PCRLv1 "[Preservational Learning Improves Self-supervised Medical Image Models by Reconstructing Diverse Contexts](https://arxiv.org/pdf/2109.04379.pdf)".
-
+**If you would like to use our model to do segmentation, please ADD SKIP CONNECTIONS to the UNet architecture! Otherwise, the segmentation performance might be underperformed.**
 ----
 ## How to Perform Fine-tuning
 
